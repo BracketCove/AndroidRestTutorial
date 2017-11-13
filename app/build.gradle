@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.wiseassblog.androidresttutorial"
-        minSdkVersion 21
-        targetSdkVersion 26
+        applicationId "forgettery.wiseass.com.githubrest"
+        minSdkVersion 16
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -24,7 +24,35 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:26.+'
+
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+
+    compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:design:25.3.1'
+
+    compile "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
+    compile "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
+
+    compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    compile "com.squareup.retrofit2:converter-moshi:$rootProject.retrofitVersion"
+
+    compile "com.squareup.moshi:moshi:$rootProject.moshiVersion"
+
+    compile "com.fasterxml.jackson.core:jackson-core:$rootProject.jacksonVersion"
+    compile "com.fasterxml.jackson.core:jackson-annotations:$rootProject.jacksonVersion"
+    compile "com.fasterxml.jackson.core:jackson-databind:$rootProject.jacksonVersion"
+
+    compile "com.google.dagger:dagger:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+
+    provided "javax.annotation:jsr250-api:$rootProject.jsr250Version"
+
+    /*
+    https://github.com/hdodenhof/CircleImageView
+     */
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+
+    testCompile 'org.mockito:mockito-core:2.8.9'
     testCompile 'junit:junit:4.12'
 }

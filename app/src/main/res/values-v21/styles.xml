@@ -18,17 +18,14 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#121212</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#80D8FF</color>
-    <color name="colorWindowBackground">#121212</color>
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorWindowBackground</item>
 
-    <!-- 52 = 32%, hex to alpha -->
-    <color name="colorTransparentBlack">#52000000</color>
-    <color name="colorTransparentWhite">#52FFFFFF</color>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
 
-    <color name="RED">#FF0000</color>
-    <color name="BLUE">#0000FF</color>
-    <color name="GREEN">#00FF00</color>
-    <color name="YELLOW">#FFEB3B</color>
 </resources>
