@@ -18,33 +18,39 @@
 
 package com.wiseassblog.androidresttutorial;
 
+import android.app.Activity;
 import android.app.Application;
 
-import com.wiseassblog.androidresttutorial.di.NetworkComponent;
-import com.wiseassblog.androidresttutorial.di.NetworkModule;
+import com.wiseassblog.androidresttutorial.di.DaggerApplicationComponent;
+
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
 
 /**
  * Created by R_KAY on 10/29/2017.
  */
 
-public class GitHubApplication extends Application {
-
-    private NetworkComponent networkComponent;
-
+public class GitHubApplication extends Application implements HasActivityInjector{
+    @Inject
+    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-
-        NetworkModule networkModule = new NetworkModule(
-                getApplicationContext()
-        );
-
-        networkComponent = DaggerNetworkComponent
+        DaggerApplicationComponent
                 .builder()
-                .applicationModule(networkModule)
-                .build();
+                .application(this)
+                .build()
+                .inject(this);
 
+    }
+
+    @Override
+    public AndroidInjector<Activity> activityInjector() {
+        return dispatchingAndroidInjector;
     }
 }

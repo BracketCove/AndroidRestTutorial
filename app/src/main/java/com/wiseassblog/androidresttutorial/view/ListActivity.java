@@ -40,6 +40,10 @@ import com.wiseassblog.androidresttutorial.logic.Controller;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+
 /**
  * For simplicities' sake, this Activity functions as the View. I'd normally have a Fragment
  * function as the View instead; with the Activity acting as container.
@@ -53,10 +57,13 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
     private CustomAdapter adapter;
     private Toolbar toolbar;
 
-    private Controller controller;
+
+    @Inject
+    Controller controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
@@ -72,8 +79,7 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
 
         fabulous.setOnClickListener(this);
 
-        //TODO create via D.I.
-        //controller = new Controller(this, );
+        controller.start();
     }
 
     @Override

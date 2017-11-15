@@ -25,10 +25,10 @@ import io.reactivex.schedulers.Schedulers;
 // consistency.
 public class RepositorySource implements DataSourceInterface {
 
-    private DataSourceInterface restAdapter;
+    private GitHubRestAdapter restAdapter;
 
     @Inject
-    public RepositorySource(DataSourceInterface restAdapter) {
+    public RepositorySource(GitHubRestAdapter restAdapter) {
         this.restAdapter = restAdapter;
     }
 

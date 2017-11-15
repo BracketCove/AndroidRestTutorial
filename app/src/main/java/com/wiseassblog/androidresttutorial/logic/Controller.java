@@ -38,6 +38,7 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class Controller {
 
+
     private ViewInterface view;
     private DataSourceInterface dataSource;
 
@@ -46,10 +47,11 @@ public class Controller {
     public Controller(ViewInterface view, DataSourceInterface dataSource) {
         this.view = view;
         this.dataSource = dataSource;
-
-        getListFromDataSource();
     }
 
+    public void start(){
+        getListFromDataSource();
+    }
 
     public void getListFromDataSource() {
         dataSource.getUserRepositories("BracketCove")

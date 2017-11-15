@@ -11,52 +11,54 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            minifyEnabled false
+            applicationIdSuffix ".debug"
+        }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
     compile "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-
-
     compile "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
     compile "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
-
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     compile "com.squareup.retrofit2:converter-moshi:$rootProject.retrofitVersion"
     compile "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitVersion"
-
     compile "com.squareup.moshi:moshi:$rootProject.moshiVersion"
     compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
-
     compile "com.fasterxml.jackson.core:jackson-core:$rootProject.jacksonVersion"
     compile "com.fasterxml.jackson.core:jackson-annotations:$rootProject.jacksonVersion"
     compile "com.fasterxml.jackson.core:jackson-databind:$rootProject.jacksonVersion"
 
     compile "com.google.dagger:dagger:$rootProject.daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
+    compile "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
 
     provided "javax.annotation:jsr250-api:$rootProject.jsr250Version"
-
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
     compile "android.arch.lifecycle:runtime:$rootProject.archLifecycleVersion"
     compile "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
 
-    testCompile 'org.mockito:mockito-core:2.8.9'
-    testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testCompile "junit:junit:$rootProject.junitVersion"
+
 }
