@@ -23,9 +23,14 @@ import android.content.Context;
 import com.wiseassblog.androidresttutorial.error.ErrorInterceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 /**
+ * This is where we build the stuff necessary for our Retrofit REST Adapter to work properly.
+ *
+ * By building it via D.I., we remove lots of code and implementation details which shouldn't be
+ * present within our Retrofit Adapter itself.
  * Created by R_KAY on 10/29/2017.
  */
 
@@ -46,6 +51,7 @@ public class NetworkModule {
                 .client(client)
                 .baseUrl(API_HOST)
                 .addConverterFactory(MoshiConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
 

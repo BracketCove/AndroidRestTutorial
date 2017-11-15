@@ -20,10 +20,9 @@ package com.wiseassblog.androidresttutorial.view;
 
 import android.view.View;
 
-import java.util.List;
+import com.wiseassblog.androidresttutorial.data.GithubRepository;
 
-import com.wiseassblog.androidresttutorial.data.ListItem;
-import com.wiseassblog.androidresttutorial.data.Repository;
+import java.util.List;
 
 /**
  * This Interface is the Contract which dictates how our View and Presenter can talk to each other.
@@ -34,8 +33,8 @@ import com.wiseassblog.androidresttutorial.data.Repository;
 
 public interface ViewInterface {
 
-    void startDetailActivity(String dateAndTime, String message, int colorResource, View viewRoot);
+    void setUpAdapterAndView(List<GithubRepository> listOfData);
 
-    void setUpAdapterAndView(List<ListItem> listOfData);
+    void startMainActivity();
 
 }

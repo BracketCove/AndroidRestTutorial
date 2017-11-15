@@ -18,58 +18,36 @@
 
 package com.wiseassblog.androidresttutorial.view;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.transition.Fade;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.wiseassblog.androidresttutorial.R;
+import com.wiseassblog.androidresttutorial.data.GithubRepository;
+import com.wiseassblog.androidresttutorial.logic.Controller;
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-import com.wiseassblog.androidresttutorial.R;
-import com.wiseassblog.androidresttutorial.data.ListItem;
-import com.wiseassblog.androidresttutorial.data.Repository;
-import com.wiseassblog.androidresttutorial.logic.Controller;
-
 /**
- * 1.
- * List Activity is responsible for
- * - Coordinating the User Interface
- * - Relaying Click events to the Controller
- * - Starting a Detail Activity
- * -
+ * For simplicities' sake, this Activity functions as the View. I'd normally have a Fragment
+ * function as the View instead; with the Activity acting as container.
  */
 public class ListActivity extends AppCompatActivity implements ViewInterface, View.OnClickListener {
 
-    private static final String EXTRA_DATE_AND_TIME = "EXTRA_DATE_AND_TIME";
-    private static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
-    private static final String EXTRA_DRAWABLE = "EXTRA_DRAWABLE";
+    private List<GithubRepository> listOfData;
 
-    /**
-     * 2.
-     * Obviously you wouldn't use such an ambiguous name in a non-demo App.
-     */
-    private List<ListItem> listOfData;
-
-    //12. In order to create each ViewHolder in the UI, we need a LayoutInflater.
     private LayoutInflater layoutInflater;
     private RecyclerView recyclerView;
     private CustomAdapter adapter;
@@ -84,8 +62,8 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
 
         recyclerView = (RecyclerView) findViewById(R.id.rec_list_activity);
         layoutInflater = getLayoutInflater();
-        toolbar = (Toolbar) findViewById(R.id.tlb_list_activity);
 
+        toolbar = (Toolbar) findViewById(R.id.tlb_list_activity);
         toolbar.setTitle(R.string.title_toolbar);
         toolbar.setLogo(R.drawable.ic_view_list_white_24dp);
         toolbar.setTitleMarginStart(72);
@@ -98,54 +76,13 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
         //controller = new Controller(this, );
     }
 
-    /**
-     * 17.
-     * So, I'd normally just pass an Item's Unique ID (Key) to the other Activity, and then fetch
-     * the Item from the Database their. However, this is a RecyclerView Demo App and I'm going to
-     * simplify things like this. Also, by decomposing ListItem, it saves me having to make ListItem
-     * Parcelable and bla bla bla whatever.
-     *
-     * @param dateAndTime
-     * @param message
-     * @param colorResource
-     */
     @Override
-    public void startDetailActivity(String dateAndTime, String message, int colorResource, View viewRoot) {
-        Intent i = new Intent(this, DetailActivity.class);
-        i.putExtra(EXTRA_DATE_AND_TIME, dateAndTime);
-        i.putExtra(EXTRA_MESSAGE, message);
-        i.putExtra(EXTRA_DRAWABLE, colorResource);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setEnterTransition(new Fade(Fade.IN));
-            getWindow().setEnterTransition(new Fade(Fade.OUT));
-
-            ActivityOptions options = ActivityOptions
-                    .makeSceneTransitionAnimation(this,
-                            new Pair<View, String>(viewRoot.findViewById(R.id.imv_list_item_circle),
-                                    getString(R.string.transition_drawable)),
-                            new Pair<View, String>(viewRoot.findViewById(R.id.lbl_message),
-                                    getString(R.string.transition_message)),
-                            new Pair<View, String>(viewRoot.findViewById(R.id.lbl_date_and_time),
-                                    getString(R.string.transition_time_and_date)));
-
-            startActivity(i, options.toBundle());
-
-
-        } else {
-            startActivity(i);
-        }
+    public void startMainActivity() {
+        startActivity(new Intent(this, ListActivity.class));
     }
 
-
-    /**
-     * In order to make sure things execute in the proper order, we have our Controller tell the
-     * View when to set up it's stuff.
-     *
-     * @param listOfData
-     */
     @Override
-    public void setUpAdapterAndView(List<ListItem> listOfData) {
+    public void setUpAdapterAndView(List<GithubRepository> listOfData) {
         this.listOfData = listOfData;
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
@@ -176,8 +113,7 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
 
     }
 
-    private class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {//6
-
+    private class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
 
         @Override
         public CustomAdapter.CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -188,71 +124,38 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
 
         @Override
         public void onBindViewHolder(CustomAdapter.CustomViewHolder holder, int position) {
-            ListItem currentItem = listOfData.get(position);
+            GithubRepository repo = listOfData.get(position);
 
-//            holder.coloredCircle.setImageResource(
-//                    currentItem.getColorResource()
-//            );
-//
-//            holder.message.setText(
-//                    currentItem.getMessage()
-//            );
-//
-//            holder.dateAndTime.setText(
-//                    currentItem.getDateAndTime()
-//            );
+            Glide.with(ListActivity.this)
+                    .load(repo.getAvatar_url())
+                    .into(holder.userAvatar);
 
-            holder.loading.setVisibility(View.INVISIBLE);
+            holder.description.setText(
+                    repo.getDescription()
+            );
+
+            holder.creationDate.setText(
+                    repo.getCreated_at()
+            );
         }
 
         @Override
         public int getItemCount() {
-            // 12. Returning 0 here will tell our Adapter not to make any Items. Let's fix that.
             return listOfData.size();
         }
 
 
-        class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        class CustomViewHolder extends RecyclerView.ViewHolder {
 
-            //10. now that we've made our layouts, let's bind them
-            private CircleImageView coloredCircle;
-            private TextView dateAndTime;
-            private TextView message;
-            private ViewGroup container;
-            private ProgressBar loading;
+            private ImageView userAvatar;
+            private TextView creationDate;
+            private TextView description;
 
             public CustomViewHolder(View itemView) {
                 super(itemView);
-                this.coloredCircle = (CircleImageView) itemView.findViewById(R.id.imv_list_item_circle);
-                this.dateAndTime = (TextView) itemView.findViewById(R.id.lbl_date_and_time);
-                this.message = (TextView) itemView.findViewById(R.id.lbl_message);
-                this.loading = (ProgressBar) itemView.findViewById(R.id.pro_item_data);
-
-                this.container = (ViewGroup) itemView.findViewById(R.id.root_list_item);
-                /*
-                We can pass "this" as an Argument, because "this", which refers to the Current
-                Instance of type CustomViewHolder currently conforms to (implements) the
-                View.OnClickListener interface. I have a Video on my channel which goes into
-                Interfaces with Detailed Examples.
-
-                Search "Android WTF: Java Interfaces by Example"
-                 */
-                this.container.setOnClickListener(this);
-            }
-
-
-            @Override
-            public void onClick(View v) {
-
-                ListItem listItem = listOfData.get(
-                        this.getAdapterPosition()
-                );
-
-//                controller.onListItemClick(
-//                        listItem,
-//                        v
-//                );
-
+                this.userAvatar = (ImageView) itemView.findViewById(R.id.imv_list_item_circle);
+                this.creationDate = (TextView) itemView.findViewById(R.id.lbl_date_and_time);
+                this.description = (TextView) itemView.findViewById(R.id.lbl_message);
             }
         }
     }

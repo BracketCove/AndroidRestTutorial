@@ -32,6 +32,6 @@ import io.reactivex.Flowable;
 
 public interface DataSourceInterface {
 
-    Flowable<List<Repository>> getUserRepositories(String user);
+    Flowable<List<GithubRepository>> getUserRepositories(String user);
 
 }

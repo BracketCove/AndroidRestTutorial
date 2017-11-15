@@ -36,7 +36,7 @@ import com.wiseassblog.androidresttutorial.R;
  * Created by R_KAY on 6/3/2017.
  */
 
-public class DetailActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final String EXTRA_DATE_AND_TIME = "EXTRA_DATE_AND_TIME";
     private static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
@@ -49,7 +49,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_main);
 
         /*I wouldn't normally pass all this Data via Intent, so understand that this is just a quick
         implementation to get things working for the Demo. I'd normally pass just a Unique id as an

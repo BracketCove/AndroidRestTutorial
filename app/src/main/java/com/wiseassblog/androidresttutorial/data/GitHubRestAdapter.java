@@ -26,12 +26,18 @@ import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 /**
+ * This is the Class which actually talks to the REST endpoint. It can be thought of as a "Remote"
+ * Datasource.
+ *
+ * Note that it implements the same interface as our RepositorySource; ensuring consistency between
+ * such Model/Data Classes.
  * Created by R_KAY on 10/29/2017.
  */
 
@@ -45,7 +51,7 @@ public class GitHubRestAdapter implements DataSourceInterface {
      */
     public interface GitHubService {
         @GET(REPOS)
-        Call<List<Repository>> getUserPublicRepositories(
+        Flowable<List<GithubRepository>> getUserPublicRepositories(
                 @Query("user") String user
         );
     }
@@ -56,17 +62,8 @@ public class GitHubRestAdapter implements DataSourceInterface {
     }
 
     @Override
-    public Flowable<List<Repository>> getUserRepositories(final String user) {
-        return Flowable.create(
-                new FlowableOnSubscribe<List<Repository>>() {
-                    @Override
-                    public void subscribe(FlowableEmitter<List<Repository>> e) throws Exception {
-                       Call<List<Repository>> call = github.getUserPublicRepositories(user);
-                       e.onNext(call.execute().body());
-                    }
-                }
-                ,
-                BackpressureStrategy.LATEST);
+    public Flowable<List<GithubRepository>> getUserRepositories(final String user) {
+        return github.getUserPublicRepositories(user);
     }
 
 }

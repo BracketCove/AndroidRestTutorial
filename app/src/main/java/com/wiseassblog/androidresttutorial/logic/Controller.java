@@ -18,14 +18,12 @@
 
 package com.wiseassblog.androidresttutorial.logic;
 
-import android.view.View;
-
 import java.util.List;
 
 import javax.inject.Inject;
 
 import com.wiseassblog.androidresttutorial.data.DataSourceInterface;
-import com.wiseassblog.androidresttutorial.data.Repository;
+import com.wiseassblog.androidresttutorial.data.GithubRepository;
 import com.wiseassblog.androidresttutorial.view.ViewInterface;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -41,8 +39,6 @@ import io.reactivex.subscribers.DisposableSubscriber;
 public class Controller {
 
     private ViewInterface view;
-
-
     private DataSourceInterface dataSource;
 
 
@@ -59,9 +55,9 @@ public class Controller {
         dataSource.getUserRepositories("BracketCove")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<Repository>>() {
+                .subscribeWith(new DisposableSubscriber<List<GithubRepository>>() {
                     @Override
-                    public void onNext(List<Repository> repositories) {
+                    public void onNext(List<GithubRepository> repositories) {
                         view.setUpAdapterAndView(repositories);
                     }
 
@@ -76,4 +72,6 @@ public class Controller {
                     }
                 });
     }
+
+
 }

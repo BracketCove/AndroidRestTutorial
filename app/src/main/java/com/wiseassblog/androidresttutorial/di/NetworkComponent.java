@@ -32,5 +32,4 @@ import retrofit2.Retrofit;
 public interface NetworkComponent {
     Retrofit retrofit();
     OkHttpClient okHttpClient();
-
 }
