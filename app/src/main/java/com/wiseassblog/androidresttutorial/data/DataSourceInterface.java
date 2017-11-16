@@ -23,7 +23,7 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 /**
- * This interface is the Contract which dictates how our Controller can talk to our Data Layer and
+ * This interface is the Contract which dictates how our ListPresenter can talk to our Data Layer and
  * Vice Versa.
  *
  * @see <a href="https://www.youtube.com/edit?o=U&video_id=VCmi0gBxd0E">Android Java Interfaces by Example</a>

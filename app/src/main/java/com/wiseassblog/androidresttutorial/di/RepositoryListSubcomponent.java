@@ -1,6 +1,6 @@
 package com.wiseassblog.androidresttutorial.di;
 
-import com.wiseassblog.androidresttutorial.view.ListActivity;
+import com.wiseassblog.androidresttutorial.repolist.ListActivity;
 
 import dagger.Subcomponent;
 import dagger.android.AndroidInjector;

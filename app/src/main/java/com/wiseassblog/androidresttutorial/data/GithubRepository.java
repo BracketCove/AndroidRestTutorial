@@ -18,6 +18,8 @@
 
 package com.wiseassblog.androidresttutorial.data;
 
+import java.security.acl.Owner;
+
 /**
  * Note: This is not a Repository Pattern! It just happens that our DataModel is a Repository lol.
  * Check out RepositorySource.java for the actual Repository/Facade Pattern in action.
@@ -39,18 +41,18 @@ public class GithubRepository {
     Note that some serialization Libs can be configured to map from a name like "avatar_url" to
     "avatarUrl" using annotations and other wizardry. Check out Moshi library by square for example.
      */
-    final String avatar_url;
     final String description;
     final String created_at;
+    final Owner owner;
 
-    public GithubRepository(String avatar_url, String description, String created_at) {
-        this.avatar_url = avatar_url;
+    public GithubRepository(Owner owner, String description, String created_at) {
+        this.owner = owner;
         this.description = description;
         this.created_at = created_at;
     }
 
-    public String getAvatar_url() {
-        return avatar_url;
+    public String getAvatarUrl() {
+        return owner.getAvatar_url();
     }
 
     public String getDescription() {
@@ -59,5 +61,17 @@ public class GithubRepository {
 
     public String getCreated_at() {
         return created_at;
+    }
+
+    static class Owner {
+        final String avatar_url;
+
+        public Owner(String avatar_url) {
+            this.avatar_url = avatar_url;
+        }
+
+        public String getAvatar_url() {
+            return avatar_url;
+        }
     }
 }

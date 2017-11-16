@@ -16,9 +16,7 @@
  *
  */
 
-package com.wiseassblog.androidresttutorial.view;
-
-import android.view.View;
+package com.wiseassblog.androidresttutorial.repolist;
 
 import com.wiseassblog.androidresttutorial.data.GithubRepository;
 

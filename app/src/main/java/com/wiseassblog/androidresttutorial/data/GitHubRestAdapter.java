@@ -30,6 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -42,7 +43,7 @@ import retrofit2.http.Query;
  */
 
 public class GitHubRestAdapter implements DataSourceInterface {
-    private static final String REPOS = "/user/{user}/repos";
+    private static final String REPOS = "/users/{user}/repos";
     private final GitHubService github;
 
     /**
@@ -52,7 +53,7 @@ public class GitHubRestAdapter implements DataSourceInterface {
     public interface GitHubService {
         @GET(REPOS)
         Flowable<List<GithubRepository>> getUserPublicRepositories(
-                @Query("user") String user
+                @Path("user") String user
         );
     }
 

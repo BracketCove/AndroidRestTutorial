@@ -18,44 +18,54 @@
 
 package com.wiseassblog.androidresttutorial.logic;
 
+import android.arch.lifecycle.LifecycleObserver;
+import android.util.Log;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
 import com.wiseassblog.androidresttutorial.data.DataSourceInterface;
 import com.wiseassblog.androidresttutorial.data.GithubRepository;
-import com.wiseassblog.androidresttutorial.view.ViewInterface;
+import com.wiseassblog.androidresttutorial.repolist.ViewInterface;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
- * Please note that Controller is intended to be a generic term for a Class which coordinates events
+ * Please note that ListPresenter is intended to be a generic term for a Class which coordinates events
  * and logic. This is not me showing you how to implement MVC.
- *
+ * <p>
  * Created by R_KAY on 6/3/2017.
  */
 
-public class Controller {
-
+public class ListPresenter implements LifecycleObserver {
 
     private ViewInterface view;
     private DataSourceInterface dataSource;
-
+    private CompositeDisposable disposables;
 
     @Inject
-    public Controller(ViewInterface view, DataSourceInterface dataSource) {
+    public ListPresenter(ViewInterface view, DataSourceInterface dataSource) {
         this.view = view;
         this.dataSource = dataSource;
+        disposables = new CompositeDisposable();
     }
 
-    public void start(){
-        getListFromDataSource();
+    public void start(String user) {
+        getListFromDataSource(user);
     }
 
-    public void getListFromDataSource() {
-        dataSource.getUserRepositories("BracketCove")
-                .subscribeOn(Schedulers.io())
+    public void stop() {
+        disposables.clear();
+    }
+
+    public void getListFromDataSource(String user) {
+        disposables.add(
+                dataSource.getUserRepositories(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<List<GithubRepository>>() {
                     @Override
@@ -65,15 +75,14 @@ public class Controller {
 
                     @Override
                     public void onError(Throwable t) {
-
+                        Log.d("ERROR", t.getMessage() + " " + t.getLocalizedMessage());
                     }
 
                     @Override
                     public void onComplete() {
 
                     }
-                });
+                })
+        );
     }
-
-
 }

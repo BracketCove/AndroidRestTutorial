@@ -2,7 +2,7 @@ package com.wiseassblog.androidresttutorial.di;
 
 import android.app.Activity;
 
-import com.wiseassblog.androidresttutorial.view.ListActivity;
+import com.wiseassblog.androidresttutorial.repolist.ListActivity;
 
 import dagger.Binds;
 import dagger.Module;

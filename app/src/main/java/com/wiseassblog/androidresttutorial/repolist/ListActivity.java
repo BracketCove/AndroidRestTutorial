@@ -16,11 +16,10 @@
  *
  */
 
-package com.wiseassblog.androidresttutorial.view;
+package com.wiseassblog.androidresttutorial.repolist;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -32,11 +31,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.wiseassblog.androidresttutorial.R;
 import com.wiseassblog.androidresttutorial.data.GithubRepository;
-import com.wiseassblog.androidresttutorial.logic.Controller;
+import com.wiseassblog.androidresttutorial.logic.ListPresenter;
 
 import java.util.List;
 
@@ -49,6 +49,8 @@ import dagger.android.AndroidInjection;
  * function as the View instead; with the Activity acting as container.
  */
 public class ListActivity extends AppCompatActivity implements ViewInterface, View.OnClickListener {
+    private static final String STRING_USERNAME = "STRING_USERNAME";
+    private static final String BUNDLE_EXTRA = "BUNDLE_EXTRA";
 
     private List<GithubRepository> listOfData;
 
@@ -56,10 +58,10 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
     private RecyclerView recyclerView;
     private CustomAdapter adapter;
     private Toolbar toolbar;
-
+    private String user;
 
     @Inject
-    Controller controller;
+    ListPresenter listPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,19 +74,23 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
 
         toolbar = (Toolbar) findViewById(R.id.tlb_list_activity);
         toolbar.setTitle(R.string.title_toolbar);
-        toolbar.setLogo(R.drawable.ic_view_list_white_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setTitleMarginStart(72);
+        toolbar.setNavigationOnClickListener(this);
 
-        FloatingActionButton fabulous = (FloatingActionButton) findViewById(R.id.fab_create_new_item);
+        Bundle extras = getIntent().getBundleExtra(BUNDLE_EXTRA);
+        if (extras != null) {
+            user = extras.getString(STRING_USERNAME);
+        } else {
+            Toast.makeText(this, "Extras were null.", Toast.LENGTH_SHORT).show();
+            startMainActivity();
+        }
 
-        fabulous.setOnClickListener(this);
-
-        controller.start();
     }
 
     @Override
     public void startMainActivity() {
-        startActivity(new Intent(this, ListActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override
@@ -115,8 +121,21 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
     }
 
     @Override
-    public void onClick(View v) {
+    protected void onStop() {
+        super.onStop();
+        listPresenter.stop();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        listPresenter.start(user);
+    }
+
+    @Override
+    public void onClick(View v) {
+        startMainActivity();
     }
 
     private class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
@@ -133,8 +152,9 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
             GithubRepository repo = listOfData.get(position);
 
             Glide.with(ListActivity.this)
-                    .load(repo.getAvatar_url())
-                    .into(holder.userAvatar);
+                    .load(repo.getAvatarUrl())
+
+                    .into(holder.userAvatar)            ;
 
             holder.description.setText(
                     repo.getDescription()
@@ -159,7 +179,7 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
 
             public CustomViewHolder(View itemView) {
                 super(itemView);
-                this.userAvatar = (ImageView) itemView.findViewById(R.id.imv_list_item_circle);
+                this.userAvatar = (ImageView) itemView.findViewById(R.id.imv_list_item);
                 this.creationDate = (TextView) itemView.findViewById(R.id.lbl_date_and_time);
                 this.description = (TextView) itemView.findViewById(R.id.lbl_message);
             }

@@ -1,14 +1,10 @@
 package com.wiseassblog.androidresttutorial.di;
 
-import com.wiseassblog.androidresttutorial.view.ListActivity;
-import com.wiseassblog.androidresttutorial.view.ViewInterface;
-
-import javax.inject.Named;
+import com.wiseassblog.androidresttutorial.repolist.ListActivity;
+import com.wiseassblog.androidresttutorial.repolist.ViewInterface;
 
 import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
-import dagger.android.ContributesAndroidInjector;
 
 /**
  * Created by R_KAY on 11/15/2017.
