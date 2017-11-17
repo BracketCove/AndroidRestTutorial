@@ -1,9 +1,9 @@
-##Start Here
+## Start Here
 Welcome to my Android REST sample app and tutorial. If you are interested in learning the basics of communicating from an Android Application to a RESTful Web Service, you're in the right place.
 
 All code within repository is Open Source, and I do my best to write legible and concise code in general. There will also be a Video Tutorial series available on my [Youtube Channel](https://www.youtube.com/user/gosuddr93/videos?view_as=subscriber), where I'll be building the important parts of this application on camera.
 
-##Overview
+## Overview
 Current plans are to implement two primary features:
 1. Consume and display Repositories based on username. To achieve this, the user will enter a Username on GitHub, after which our App will turn it into a request as so:
 
@@ -14,7 +14,7 @@ Enter the above URL into the address bar of any browser. Try replacing my Userna
 
 2. Implement OAuth User Authentication with a third party service; likely GitHub as well. OAuth is a standard for managing access to various applications and websites. I'll be building this part later on; wait for further details.
 
-##Contribution Guidelines
+## Contribution Guidelines
 **READ BEFORE CONSIDERING A CONTRIBUTION!!**
 I'll be building this project with live feedback and contributions from anyone who gives good feedback and contributions. I do, however, have strict requirements for any code contributions.
  
@@ -34,10 +34,10 @@ I'll be building this project with live feedback and contributions from anyone w
  People who provide valid contributions will at minimum be mentioned in the "Contributers" section of this Repo. Major contributions will be mentioned in the tutorials proper, and we can certainly discuss Social Media shoutouts. 
  
 
-##Contributers
+## Contributers
 
 
-##Discussion
+## Discussion
 Most discussion of this project will take place in my [Slack Channel](https://api.github.com/users/BracketCove/repos). 
 
 As mentioned above, you may also use GitHub Issues if you have something against slack.
