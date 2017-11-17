@@ -4,6 +4,9 @@ import com.wiseassblog.androidresttutorial.data.GitHubRestAdapter;
 import com.wiseassblog.androidresttutorial.data.GithubRepository;
 import com.wiseassblog.androidresttutorial.data.UrlManager;
 import com.wiseassblog.androidresttutorial.error.ErrorInterceptor;
+import com.wiseassblog.androidresttutorial.error.UnexpectedApiError;
+
+import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
@@ -80,7 +83,8 @@ public class GitHubRestAdapterTest {
                 .values()
                 .get(0);
 
-        assert (result.size() == 2);
+        //SAMPLE_JSON_DATA returns a json array with 2 elements, hence assertion here
+        Assert.assertEquals(result.size(),2);
     }
 
 //
@@ -108,13 +112,9 @@ public class GitHubRestAdapterTest {
 
         //So... BaseTestConsumer returns a List<T> of the consumed value type
         //which happens to be a list<GithubRepository>. This seems suboptimal.
-        List<Throwable> result = adapter.getUserRepositories("BracketCoveTest")
+        adapter.getUserRepositories("BracketCoveTest")
                 .test()
-                .errors();
-
-        assert (result.get(0).getMessage().equals("Not Foun"));
-
-
+                .assertError(UnexpectedApiError.class);
     }
 
     @After
