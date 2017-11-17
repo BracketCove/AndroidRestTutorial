@@ -34,16 +34,25 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
+ * What does this class do?
  * This is the Class which actually talks to the REST endpoint. It can be thought of as a "Remote"
  * Datasource.
  *
  * Note that it implements the same interface as our RepositorySource; ensuring consistency between
  * such Model/Data Classes.
+ *
+ * Why is it called Adapter?
+ * This Class acts as the "go-between", or adapter, between our Application and GitHub's Web App.
+ * The adaption can be thought of two ways:
+ * - Via Retrofit + OKHttp, or Java code gets turned into HTTP Requests (messages)
+ * - Via Retrofit + OkHttp + JSON Serializer, HTTP Responses which contain the JSON data are adapted
+ * into Java objects we can use in our Application.
+ *
  * Created by R_KAY on 10/29/2017.
  */
 
 public class GitHubRestAdapter implements DataSourceInterface {
-    private static final String REPOS = "/users/{user}/repos";
+
     private final GitHubService github;
 
     /**
@@ -51,7 +60,7 @@ public class GitHubRestAdapter implements DataSourceInterface {
      * Each interface method, can be thought of as a RESTful method.
      */
     public interface GitHubService {
-        @GET(REPOS)
+        @GET(UrlManager.REPOS)
         Flowable<List<GithubRepository>> getUserPublicRepositories(
                 @Path("user") String user
         );

@@ -6,6 +6,7 @@ import com.wiseassblog.androidresttutorial.GitHubApplication;
 import com.wiseassblog.androidresttutorial.data.DataSourceInterface;
 import com.wiseassblog.androidresttutorial.data.GitHubRestAdapter;
 import com.wiseassblog.androidresttutorial.data.RepositorySource;
+import com.wiseassblog.androidresttutorial.data.UrlManager;
 import com.wiseassblog.androidresttutorial.error.ErrorInterceptor;
 
 import javax.inject.Singleton;
@@ -22,7 +23,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
  */
 @Module(subcomponents = {RepositoryListSubcomponent.class})
 public class ApplicationModule {
-    private static final String API_HOST = "https://api.github.com";
+
+    private static final String REPOS = "/users/{user}/repos";
+
 
     @Provides
     Context provideContext(GitHubApplication application){
@@ -52,7 +55,7 @@ public class ApplicationModule {
 
         return new Retrofit.Builder()
                 .client(client)
-                .baseUrl(API_HOST)
+                .baseUrl(UrlManager.API_HOST)
                 .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();

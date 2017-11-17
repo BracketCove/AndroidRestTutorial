@@ -53,6 +53,8 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
     compile "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
 
+    testCompile "com.squareup.okhttp3:mockwebserver:$rootProject.mockWebServerVersion"
+
     provided "javax.annotation:jsr250-api:$rootProject.jsr250Version"
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
     compile "android.arch.lifecycle:runtime:$rootProject.archLifecycleVersion"
