@@ -16,13 +16,13 @@
  *
  */
 
-package com.wiseassblog.androidresttutorial.data;
+package com.wiseassblog.androidresttutorial.datamodel;
 
 import java.security.acl.Owner;
 
 /**
  * Note: This is not a Repository Pattern! It just happens that our DataModel is a Repository lol.
- * Check out RepositorySource.java for the actual Repository/Facade Pattern in action.
+ * Check out GithubRepositorySource.java for the actual Repository/Facade Pattern in action.
  *
  * Primary DataModel for this Application.
  * Our REST Adapter will convert JSON from the REST endpoint into this POJO.
@@ -38,8 +38,8 @@ public class GithubRepository {
     which doesn't follow camel case. This is how our serialization library will know which
     members (I think that's the JSON name for key/value pairs...) to bind to our DataModel Here.
 
-    Note that some serialization Libs can be configured to map from a name like "avatar_url" to
-    "avatarUrl" using annotations and other wizardry. Check out Moshi library by square for example.
+    Note that most serialization Libs can be configured to map from a name like "avatar_url" to
+    "avatarUrl" using annotations and other wizardry.
      */
     final String description;
     final String created_at;

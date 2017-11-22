@@ -18,7 +18,7 @@
 
 package com.wiseassblog.androidresttutorial.repolist;
 
-import com.wiseassblog.androidresttutorial.data.GithubRepository;
+import com.wiseassblog.androidresttutorial.viewmodel.RepositoryListItem;
 
 import java.util.List;
 
@@ -31,8 +31,11 @@ import java.util.List;
 
 public interface ViewInterface {
 
-    void setUpAdapterAndView(List<GithubRepository> listOfData);
+    void setUpAdapterAndView(List<RepositoryListItem> listOfData);
+
+    void showErrorMessage(String error);
 
     void startMainActivity();
 
+    void showLoadingIndicator();
 }

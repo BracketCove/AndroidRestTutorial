@@ -27,33 +27,27 @@ import okhttp3.Interceptor;
 import okhttp3.Response;
 
 /**
+ *
+ * Interceptors allow us to grab Requests and Responses between Layers of Implementation. In simpler
+ * terms:
+ * - Checks Requests prior to being sent over the Network
+ * - Checks Responses prior to when our GitHubRestAdapter calls back to the Repository.
+ *
+ * Among other useful things (see OkHttp Docs for more info), we can perform some global error
+ * handling operations. Errors will still be propogated to onErrorReturn() in the Repository.
  * Created by R_KAY on 10/29/2017.
  */
 
-
 public class ErrorInterceptor implements Interceptor {
-    private static final ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public Response intercept(Interceptor.Chain chain) throws IOException {
         Response response = chain.proceed(chain.request());
         if (!response.isSuccessful()) {
-            throw parseError(
+            throw new GitHubError(
                     response.code(),
-                    response.message(),
-                    response.body() != null ? response.body().string() : null
+                    response.message()
             );
         }
-        return response;
-    }
-
-    private GitHubError parseError(int code, String message, String responseBody) throws IOException {
-        if (responseBody == null) {
-            return new UnexpectedApiError(code, message);
-        }
-
-        JsonNode errorJsonNode = objectMapper.readTree(responseBody).path("error");
-        String errorCode = errorJsonNode.path("code").asText();
-        String errorText = errorJsonNode.path("description").asText();
-        return new UnexpectedApiError(code, message, errorCode, errorText);
+            return response;
     }
 }

@@ -17,7 +17,7 @@
   -->
 
 <resources>
-    <string name="app_name">GitHubRest</string>
+    <string name="app_name">AndroidRestTutorial</string>
     <string name="action_delete_item">Item Deleted</string>
     <string name="action_undo">UNDO?</string>
 
@@ -28,6 +28,9 @@
     <string name="title_toolbar">List Activity</string>
 
     <string name="GITHUB_API_HOST">https://api.github.com</string>
+
+    <!-- errors -->
+    <string name="error_empty_dataset">No Repos listed for:</string>
 
 
 </resources>

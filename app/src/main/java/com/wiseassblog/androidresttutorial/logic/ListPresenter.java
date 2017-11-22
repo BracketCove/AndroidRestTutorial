@@ -21,23 +21,19 @@ package com.wiseassblog.androidresttutorial.logic;
 import android.arch.lifecycle.LifecycleObserver;
 import android.util.Log;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import com.wiseassblog.androidresttutorial.data.DataSourceInterface;
-import com.wiseassblog.androidresttutorial.data.GithubRepository;
 import com.wiseassblog.androidresttutorial.repolist.ViewInterface;
+import com.wiseassblog.androidresttutorial.util.BaseSchedulerProvider;
+import com.wiseassblog.androidresttutorial.viewmodel.ListViewModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
- * Please note that ListPresenter is intended to be a generic term for a Class which coordinates events
- * and logic. This is not me showing you how to implement MVC.
+ * Pretty typical Presenter implementation.
  * <p>
  * Created by R_KAY on 6/3/2017.
  */
@@ -47,12 +43,16 @@ public class ListPresenter implements LifecycleObserver {
     private ViewInterface view;
     private DataSourceInterface dataSource;
     private CompositeDisposable disposables;
+    private BaseSchedulerProvider scheduler;
 
     @Inject
-    public ListPresenter(ViewInterface view, DataSourceInterface dataSource) {
+    public ListPresenter(ViewInterface view,
+                         DataSourceInterface dataSource,
+                         BaseSchedulerProvider scheduler) {
         this.view = view;
         this.dataSource = dataSource;
-        disposables = new CompositeDisposable();
+        this.disposables = new CompositeDisposable();
+        this.scheduler = scheduler;
     }
 
     public void start(String user) {
@@ -66,11 +66,18 @@ public class ListPresenter implements LifecycleObserver {
     public void getListFromDataSource(String user) {
         disposables.add(
                 dataSource.getUserRepositories(user)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<GithubRepository>>() {
+                .observeOn(scheduler.getUiScheduler())
+                .subscribeWith(new DisposableSubscriber<ListViewModel>() {
                     @Override
-                    public void onNext(List<GithubRepository> repositories) {
-                        view.setUpAdapterAndView(repositories);
+                    public void onNext(ListViewModel uiModel) {
+                        if (uiModel.hasError()) {
+                            view.showErrorMessage(uiModel.getErrorMessage());
+                            view.startMainActivity();
+                        } else if (uiModel.isLoading()) {
+                            view.showLoadingIndicator();
+                        } else {
+                            view.setUpAdapterAndView(uiModel.getRepoList());
+                        }
                     }
 
                     @Override

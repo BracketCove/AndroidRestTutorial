@@ -1,10 +1,12 @@
 package com.wiseassblog.androidresttutorial;
 
+import com.wiseassblog.androidresttutorial.viewmodel.ListViewModel;
+
 /**
  * Created by R_KAY on 11/17/2017.
  */
 
-public class TestData {
+public class AdapterTestData {
     public static final String SAMPLE_JSON_DATA = "[\n" +
             "  {\n" +
             "    \"id\": 84743813,\n" +
@@ -192,4 +194,6 @@ public class TestData {
             "  \"message\": \"Not Found\",\n"+
             "  \"documentation_url\": \"https://developer.github.com/v3/repos/#list-user-repositories\"\n"+
             "}";
+
+
 }

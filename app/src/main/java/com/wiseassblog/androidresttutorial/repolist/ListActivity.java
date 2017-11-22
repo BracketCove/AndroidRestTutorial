@@ -21,6 +21,7 @@ package com.wiseassblog.androidresttutorial.repolist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,8 +36,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.wiseassblog.androidresttutorial.R;
-import com.wiseassblog.androidresttutorial.data.GithubRepository;
+import com.wiseassblog.androidresttutorial.datamodel.GithubRepository;
 import com.wiseassblog.androidresttutorial.logic.ListPresenter;
+import com.wiseassblog.androidresttutorial.viewmodel.RepositoryListItem;
 
 import java.util.List;
 
@@ -52,13 +54,14 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
     private static final String STRING_USERNAME = "STRING_USERNAME";
     private static final String BUNDLE_EXTRA = "BUNDLE_EXTRA";
 
-    private List<GithubRepository> listOfData;
+    private List<RepositoryListItem> listOfData;
 
     private LayoutInflater layoutInflater;
     private RecyclerView recyclerView;
     private CustomAdapter adapter;
     private Toolbar toolbar;
     private String user;
+    private ContentLoadingProgressBar progressBar;
 
     @Inject
     ListPresenter listPresenter;
@@ -78,6 +81,8 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
         toolbar.setTitleMarginStart(72);
         toolbar.setNavigationOnClickListener(this);
 
+        progressBar = findViewById(R.id.pgb_list_activity);
+
         Bundle extras = getIntent().getBundleExtra(BUNDLE_EXTRA);
         if (extras != null) {
             user = extras.getString(STRING_USERNAME);
@@ -94,8 +99,18 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
     }
 
     @Override
-    public void setUpAdapterAndView(List<GithubRepository> listOfData) {
+    public void showLoadingIndicator() {
+        progressBar.show();
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void setUpAdapterAndView(List<RepositoryListItem> listOfData) {
+        progressBar.hide();
+        recyclerView.setVisibility(View.VISIBLE);
+
         this.listOfData = listOfData;
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(layoutManager);
@@ -118,6 +133,11 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
         recyclerView.addItemDecoration(
                 itemDecoration
         );
+    }
+
+    @Override
+    public void showErrorMessage(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -149,19 +169,19 @@ public class ListActivity extends AppCompatActivity implements ViewInterface, Vi
 
         @Override
         public void onBindViewHolder(CustomAdapter.CustomViewHolder holder, int position) {
-            GithubRepository repo = listOfData.get(position);
+            RepositoryListItem repo = listOfData.get(position);
 
             Glide.with(ListActivity.this)
-                    .load(repo.getAvatarUrl())
+                    .load(repo.getRepoAvatarUrl())
 
                     .into(holder.userAvatar)            ;
 
             holder.description.setText(
-                    repo.getDescription()
+                    repo.getRepoDescription()
             );
 
             holder.creationDate.setText(
-                    repo.getCreated_at()
+                    repo.getRepoCreationDate()
             );
         }
 

@@ -20,15 +20,9 @@ package com.wiseassblog.androidresttutorial.error;
 
 import java.io.IOException;
 
-public abstract class GitHubError extends IOException {
-    private String message;
-    private String code;
-    private String description;
+public class GitHubError extends IOException {
     private int responseCode;
-
-    public String getCode() {
-        return code;
-    }
+    private String message;
 
     public int getResponseCode() {
         return responseCode;
@@ -39,14 +33,9 @@ public abstract class GitHubError extends IOException {
         return message;
     }
 
-    public String getDescription() {
-        return description;
-    }
 
-    public GitHubError(int responseCode, String message, String code, String description) {
+    public GitHubError(int responseCode, String message) {
         this.responseCode = responseCode;
-        this.code = code;
         this.message = message;
-        this.description = description;
     }
 }

@@ -11,8 +11,6 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
-
     buildTypes {
         release {
             minifyEnabled false
@@ -22,6 +20,29 @@ android {
         debug {
             minifyEnabled false
             applicationIdSuffix ".debug"
+        }
+    }
+
+    flavorDimensions "app"
+
+    productFlavors {
+        prod {
+            minSdkVersion 21
+            versionNameSuffix '-prod'
+            dimension "app"
+        }
+        mock {
+            minSdkVersion 21
+            versionNameSuffix '-mock'
+            dimension "app"
+        }
+    }
+
+    variantFilter { variant ->
+        def names = variant.flavors*.name
+        def typeName = variant.buildType*.name
+        if (names.contains("mock") && typeName.contains("release")) {
+            setIgnore(true)
         }
     }
 }
@@ -47,20 +68,15 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-core:$rootProject.jacksonVersion"
     compile "com.fasterxml.jackson.core:jackson-annotations:$rootProject.jacksonVersion"
     compile "com.fasterxml.jackson.core:jackson-databind:$rootProject.jacksonVersion"
-
     compile "com.google.dagger:dagger:$rootProject.daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
     annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
     compile "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
-
     testCompile "com.squareup.okhttp3:mockwebserver:$rootProject.mockWebServerVersion"
-
     provided "javax.annotation:jsr250-api:$rootProject.jsr250Version"
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
     compile "android.arch.lifecycle:runtime:$rootProject.archLifecycleVersion"
     compile "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
-
     testCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testCompile "junit:junit:$rootProject.junitVersion"
-
 }

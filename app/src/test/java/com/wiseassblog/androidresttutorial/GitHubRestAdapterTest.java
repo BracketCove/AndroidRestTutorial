@@ -1,10 +1,8 @@
 package com.wiseassblog.androidresttutorial;
 
 import com.wiseassblog.androidresttutorial.data.GitHubRestAdapter;
-import com.wiseassblog.androidresttutorial.data.GithubRepository;
-import com.wiseassblog.androidresttutorial.data.UrlManager;
+import com.wiseassblog.androidresttutorial.datamodel.GithubRepository;
 import com.wiseassblog.androidresttutorial.error.ErrorInterceptor;
-import com.wiseassblog.androidresttutorial.error.UnexpectedApiError;
 
 import junit.framework.Assert;
 
@@ -12,16 +10,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.util.List;
 
-import io.reactivex.subscribers.TestSubscriber;
 import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
@@ -74,41 +71,34 @@ public class GitHubRestAdapterTest {
     public void onGetRepositoriesSuccessful(){
         server.enqueue(new MockResponse()
         .setResponseCode(200)
-        .setBody(TestData.SAMPLE_JSON_DATA));
+        .setBody(AdapterTestData.SAMPLE_JSON_DATA));
 
         //So... BaseTestConsumer returns a List<T> of the consumed value type
         //which happens to be a list<GithubRepository>. This seems suboptimal.
-        List<GithubRepository> result = adapter.getUserRepositories("BracketCove")
+        Response<List<GithubRepository>> result = adapter.getUserRepositories("BracketCove")
                 .test()
                 .values()
                 .get(0);
 
         //SAMPLE_JSON_DATA returns a json array with 2 elements, hence assertion here
-        Assert.assertEquals(result.size(),2);
+        Assert.assertEquals(result.body().size(),2);
     }
 
-//
-//    @Test
-//    public void onGetRepositoriesNetworkError(){
-//        server.enqueue(
-//                new MockResponse().
-//        );
-//
-//        //So... BaseTestConsumer returns a List<T> of the consumed value type
-//        //which happens to be a list<GithubRepository>. This seems suboptimal.
-//        List<GithubRepository> result = adapter.getUserRepositories("BracketCoveTest")
-//                .test()
-//                .values()
-//                .get(0);
-//
-//        assert (result.size() == 2);
-//    }
+
+    @Test
+    public void onGetRepositoriesNetworkError() throws IOException {
+        server.shutdown();
+
+        adapter.getUserRepositories("BracketCoveTest")
+                .test()
+                .assertError(IOException.class);
+    }
 
     @Test
     public void onGetRepositoriesInvalidUsername(){
         server.enqueue(new MockResponse()
                 .setResponseCode(404)
-                .setBody(TestData.ERROR_NOT_FOUND));
+                .setBody(AdapterTestData.ERROR_NOT_FOUND));
 
         //So... BaseTestConsumer returns a List<T> of the consumed value type
         //which happens to be a list<GithubRepository>. This seems suboptimal.

@@ -18,7 +18,7 @@
 
 package com.wiseassblog.androidresttutorial.data;
 
-import java.util.List;
+import com.wiseassblog.androidresttutorial.viewmodel.ListViewModel;
 
 import io.reactivex.Flowable;
 
@@ -32,6 +32,6 @@ import io.reactivex.Flowable;
 
 public interface DataSourceInterface {
 
-    Flowable<List<GithubRepository>> getUserRepositories(String user);
+    Flowable<ListViewModel> getUserRepositories(String user);
 
 }
