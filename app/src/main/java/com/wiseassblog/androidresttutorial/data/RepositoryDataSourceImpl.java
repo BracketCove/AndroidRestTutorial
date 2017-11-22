@@ -1,6 +1,6 @@
 package com.wiseassblog.androidresttutorial.data;
 
-import com.wiseassblog.androidresttutorial.datamodel.GithubRepository;
+import com.wiseassblog.androidresttutorial.datamodel.RepositoryDataModel;
 import com.wiseassblog.androidresttutorial.error.EmptyDatasetException;
 import com.wiseassblog.androidresttutorial.viewmodel.RepositoryListItem;
 import com.wiseassblog.androidresttutorial.viewmodel.ListViewModel;
@@ -33,12 +33,12 @@ import retrofit2.Response;
 
 //Both this repository, and the REST Adapter will implement the same interface to enforce
 // consistency.
-public class GithubRepositorySource implements DataSourceInterface {
+public class RepositoryDataSourceImpl implements RepositoryDataSourceInterface {
 
     private GitHubRestAdapter restAdapter;
 
     @Inject
-    public GithubRepositorySource(GitHubRestAdapter restAdapter) {
+    public RepositoryDataSourceImpl(GitHubRestAdapter restAdapter) {
         this.restAdapter = restAdapter;
     }
 
@@ -47,11 +47,11 @@ public class GithubRepositorySource implements DataSourceInterface {
 
 
         return restAdapter.getUserRepositories(user)
-                .flatMap(new Function<Response<List<GithubRepository>>,
+                .flatMap(new Function<Response<List<RepositoryDataModel>>,
                         Publisher<ListViewModel>>() {
                     @Override
                     public Publisher<ListViewModel>
-                    apply(Response<List<GithubRepository>> response) throws Exception {
+                    apply(Response<List<RepositoryDataModel>> response) throws Exception {
                         //Unless I'm missing something, we shouldn't need to check
                         // response.isSuccessful here since it was handled in ErrorIntercepter.java
                             List<RepositoryListItem> listItems
@@ -61,8 +61,8 @@ public class GithubRepositorySource implements DataSourceInterface {
                                 throw new EmptyDatasetException();
                             }
 
-                            //map from GithubRepository to RepositoryListItem
-                            for (GithubRepository repo : response.body()) {
+                            //map from RepositoryDataModel to RepositoryListItem
+                            for (RepositoryDataModel repo : response.body()) {
                                 listItems.add(
                                         new RepositoryListItem(
                                                 repo.getDescription(),

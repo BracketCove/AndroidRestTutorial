@@ -30,7 +30,7 @@ import io.reactivex.Flowable;
  * Created by R_KAY on 6/3/2017.
  */
 
-public interface DataSourceInterface {
+public interface RepositoryDataSourceInterface {
 
     Flowable<ListViewModel> getUserRepositories(String user);
 

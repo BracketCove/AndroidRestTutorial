@@ -18,7 +18,7 @@
 
 package com.wiseassblog.androidresttutorial.data;
 
-import com.wiseassblog.androidresttutorial.datamodel.GithubRepository;
+import com.wiseassblog.androidresttutorial.datamodel.RepositoryDataModel;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ import retrofit2.http.Path;
  * This is the Class which actually talks to the REST endpoint. It can be thought of as a "Remote"
  * Datasource.
  *
- * Note that it implements the same interface as our GithubRepositorySource; ensuring consistency between
+ * Note that it implements the same interface as our RepositoryDataSourceImpl; ensuring consistency between
  * such Model/Data Classes.
  *
  * Why is it called Adapter?
@@ -58,7 +58,7 @@ public class GitHubRestAdapter {
      */
     public interface GitHubService {
         @GET(UrlManager.REPOS)
-        Flowable<Response<List<GithubRepository>>> getUserPublicRepositories(
+        Flowable<Response<List<RepositoryDataModel>>> getUserPublicRepositories(
                 @Path("user") String user
         );
     }
@@ -68,7 +68,7 @@ public class GitHubRestAdapter {
         github = retrofit.create(GitHubService.class);
     }
 
-    public Flowable<Response<List<GithubRepository>>> getUserRepositories(final String user) {
+    public Flowable<Response<List<RepositoryDataModel>>> getUserRepositories(final String user) {
         return github.getUserPublicRepositories(user);
     }
 

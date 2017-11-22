@@ -1,8 +1,9 @@
 package com.wiseassblog.androidresttutorial;
 
 import com.wiseassblog.androidresttutorial.data.GitHubRestAdapter;
-import com.wiseassblog.androidresttutorial.datamodel.GithubRepository;
+import com.wiseassblog.androidresttutorial.datamodel.RepositoryDataModel;
 import com.wiseassblog.androidresttutorial.error.ErrorInterceptor;
+import com.wiseassblog.androidresttutorial.error.GitHubError;
 
 import junit.framework.Assert;
 
@@ -74,8 +75,8 @@ public class GitHubRestAdapterTest {
         .setBody(AdapterTestData.SAMPLE_JSON_DATA));
 
         //So... BaseTestConsumer returns a List<T> of the consumed value type
-        //which happens to be a list<GithubRepository>. This seems suboptimal.
-        Response<List<GithubRepository>> result = adapter.getUserRepositories("BracketCove")
+        //which happens to be a list<RepositoryDataModel>. This seems suboptimal.
+        Response<List<RepositoryDataModel>> result = adapter.getUserRepositories("BracketCove")
                 .test()
                 .values()
                 .get(0);
@@ -86,25 +87,16 @@ public class GitHubRestAdapterTest {
 
 
     @Test
-    public void onGetRepositoriesNetworkError() throws IOException {
-        server.shutdown();
-
-        adapter.getUserRepositories("BracketCoveTest")
-                .test()
-                .assertError(IOException.class);
-    }
-
-    @Test
     public void onGetRepositoriesInvalidUsername(){
         server.enqueue(new MockResponse()
                 .setResponseCode(404)
                 .setBody(AdapterTestData.ERROR_NOT_FOUND));
 
         //So... BaseTestConsumer returns a List<T> of the consumed value type
-        //which happens to be a list<GithubRepository>. This seems suboptimal.
+        //which happens to be a list<RepositoryDataModel>. This seems suboptimal.
         adapter.getUserRepositories("BracketCoveTest")
                 .test()
-                .assertError(UnexpectedApiError.class);
+                .assertError(GitHubError.class);
     }
 
     @After

@@ -16,7 +16,7 @@
  *
  */
 
-package com.wiseassblog.androidresttutorial.repolist;
+package com.wiseassblog.androidresttutorial.main;
 
 import android.Manifest;
 import android.content.Intent;
@@ -29,9 +29,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.wiseassblog.androidresttutorial.R;
+import com.wiseassblog.androidresttutorial.repolist.ListActivity;
 
 
 /**

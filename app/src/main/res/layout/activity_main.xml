@@ -23,7 +23,7 @@
     android:id="@+id/root_list_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wiseassblog.androidresttutorial.repolist.MainActivity"
+    tools:context="com.wiseassblog.androidresttutorial.main.MainActivity"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="25dp">
 

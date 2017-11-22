@@ -3,9 +3,9 @@ package com.wiseassblog.androidresttutorial.di;
 import android.content.Context;
 
 import com.wiseassblog.androidresttutorial.GitHubApplication;
-import com.wiseassblog.androidresttutorial.data.DataSourceInterface;
+import com.wiseassblog.androidresttutorial.data.RepositoryDataSourceImpl;
+import com.wiseassblog.androidresttutorial.data.RepositoryDataSourceInterface;
 import com.wiseassblog.androidresttutorial.data.GitHubRestAdapter;
-import com.wiseassblog.androidresttutorial.data.GithubRepositorySource;
 import com.wiseassblog.androidresttutorial.data.UrlManager;
 import com.wiseassblog.androidresttutorial.error.ErrorInterceptor;
 import com.wiseassblog.androidresttutorial.util.BaseSchedulerProvider;
@@ -38,8 +38,8 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    DataSourceInterface provideDataSource(GitHubRestAdapter adapter){
-        return new GithubRepositorySource(adapter);
+    RepositoryDataSourceInterface provideDataSource(GitHubRestAdapter adapter){
+        return new RepositoryDataSourceImpl(adapter);
     }
 
     @Provides

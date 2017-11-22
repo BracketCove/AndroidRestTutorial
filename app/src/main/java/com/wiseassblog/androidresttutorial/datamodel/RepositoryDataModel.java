@@ -22,7 +22,7 @@ import java.security.acl.Owner;
 
 /**
  * Note: This is not a Repository Pattern! It just happens that our DataModel is a Repository lol.
- * Check out GithubRepositorySource.java for the actual Repository/Facade Pattern in action.
+ * Check out RepositoryDataSourceImpl.java for the actual Repository/Facade Pattern in action.
  *
  * Primary DataModel for this Application.
  * Our REST Adapter will convert JSON from the REST endpoint into this POJO.
@@ -32,7 +32,7 @@ import java.security.acl.Owner;
  * Created by R_KAY on 10/29/2017.
  */
 
-public class GithubRepository {
+public class RepositoryDataModel {
     /*
     Why the ugly variable name? This is the same name as what will be returned in our JSON data,
     which doesn't follow camel case. This is how our serialization library will know which
@@ -45,7 +45,7 @@ public class GithubRepository {
     final String created_at;
     final Owner owner;
 
-    public GithubRepository(Owner owner, String description, String created_at) {
+    public RepositoryDataModel(Owner owner, String description, String created_at) {
         this.owner = owner;
         this.description = description;
         this.created_at = created_at;

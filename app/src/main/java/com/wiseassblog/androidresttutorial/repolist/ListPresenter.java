@@ -16,19 +16,17 @@
  *
  */
 
-package com.wiseassblog.androidresttutorial.logic;
+package com.wiseassblog.androidresttutorial.repolist;
 
 import android.arch.lifecycle.LifecycleObserver;
 import android.util.Log;
 
 import javax.inject.Inject;
 
-import com.wiseassblog.androidresttutorial.data.DataSourceInterface;
-import com.wiseassblog.androidresttutorial.repolist.ViewInterface;
+import com.wiseassblog.androidresttutorial.data.RepositoryDataSourceInterface;
 import com.wiseassblog.androidresttutorial.util.BaseSchedulerProvider;
 import com.wiseassblog.androidresttutorial.viewmodel.ListViewModel;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -41,13 +39,13 @@ import io.reactivex.subscribers.DisposableSubscriber;
 public class ListPresenter implements LifecycleObserver {
 
     private ViewInterface view;
-    private DataSourceInterface dataSource;
+    private RepositoryDataSourceInterface dataSource;
     private CompositeDisposable disposables;
     private BaseSchedulerProvider scheduler;
 
     @Inject
     public ListPresenter(ViewInterface view,
-                         DataSourceInterface dataSource,
+                         RepositoryDataSourceInterface dataSource,
                          BaseSchedulerProvider scheduler) {
         this.view = view;
         this.dataSource = dataSource;

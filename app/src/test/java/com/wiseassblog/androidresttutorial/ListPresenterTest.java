@@ -1,7 +1,7 @@
 package com.wiseassblog.androidresttutorial;
 
-import com.wiseassblog.androidresttutorial.data.DataSourceInterface;
-import com.wiseassblog.androidresttutorial.logic.ListPresenter;
+import com.wiseassblog.androidresttutorial.data.RepositoryDataSourceInterface;
+import com.wiseassblog.androidresttutorial.repolist.ListPresenter;
 import com.wiseassblog.androidresttutorial.repolist.ViewInterface;
 import com.wiseassblog.androidresttutorial.util.SchedulerProvider;
 import com.wiseassblog.androidresttutorial.viewmodel.RepositoryListItem;
@@ -28,7 +28,7 @@ public class ListPresenterTest  {
     public ViewInterface view;
 
     @Mock
-    public DataSourceInterface dataSource;
+    public RepositoryDataSourceInterface dataSource;
 
     private ListPresenter presenter;
 
@@ -41,7 +41,7 @@ public class ListPresenterTest  {
     }
 
     /**
-     * When DataSourceInterface returns AdapterTestData in onNext();
+     * When RepositoryDataSourceInterface returns AdapterTestData in onNext();
      *
      * Unit Testing 101:
      * Step 1: Set up Mocks/Data. This generally includes faking responses from the tested class'

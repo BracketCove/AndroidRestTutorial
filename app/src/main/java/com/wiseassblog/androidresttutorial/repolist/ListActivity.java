@@ -36,8 +36,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.wiseassblog.androidresttutorial.R;
-import com.wiseassblog.androidresttutorial.datamodel.GithubRepository;
-import com.wiseassblog.androidresttutorial.logic.ListPresenter;
+import com.wiseassblog.androidresttutorial.main.MainActivity;
 import com.wiseassblog.androidresttutorial.viewmodel.RepositoryListItem;
 
 import java.util.List;
