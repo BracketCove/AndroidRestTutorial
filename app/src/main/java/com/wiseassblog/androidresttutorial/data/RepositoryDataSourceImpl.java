@@ -2,8 +2,8 @@ package com.wiseassblog.androidresttutorial.data;
 
 import com.wiseassblog.androidresttutorial.datamodel.RepositoryDataModel;
 import com.wiseassblog.androidresttutorial.error.EmptyDatasetException;
-import com.wiseassblog.androidresttutorial.viewmodel.RepositoryListItem;
 import com.wiseassblog.androidresttutorial.viewmodel.ListViewModel;
+import com.wiseassblog.androidresttutorial.viewmodel.RepositoryListItem;
 
 import org.reactivestreams.Publisher;
 
@@ -45,49 +45,35 @@ public class RepositoryDataSourceImpl implements RepositoryDataSourceInterface {
     @Override
     public Flowable<ListViewModel> getUserRepositories(String user) {
 
-
         return restAdapter.getUserRepositories(user)
-                .flatMap(new Function<Response<List<RepositoryDataModel>>,
-                        Publisher<ListViewModel>>() {
-                    @Override
-                    public Publisher<ListViewModel>
-                    apply(Response<List<RepositoryDataModel>> response) throws Exception {
-                        //Unless I'm missing something, we shouldn't need to check
-                        // response.isSuccessful here since it was handled in ErrorIntercepter.java
-                            List<RepositoryListItem> listItems
-                                    = new ArrayList<>();
+                .flatMap(
+                        new Function<Response<List<RepositoryDataModel>>,
+                                Publisher<ListViewModel>>() {
+                            @Override
+                            public Publisher<ListViewModel>
+                            apply(Response<List<RepositoryDataModel>> response) throws Exception {
+                                //Unless I'm missing something, we shouldn't need to check
+                                // response.isSuccessful here since it was handled in ErrorIntercepter.java
+                                List<RepositoryListItem> listItems
+                                        = new ArrayList<>();
 
-                            if (response.body().size() == 0){
-                                throw new EmptyDatasetException();
+                                if (response.body().size() == 0) {
+                                    throw new EmptyDatasetException();
+                                }
+
+                                //map from RepositoryDataModel to RepositoryListItem
+                                for (RepositoryDataModel repo : response.body()) {
+                                    listItems.add(
+                                            new RepositoryListItem(
+                                                    repo.getDescription(),
+                                                    repo.getCreated_at(),
+                                                    repo.getAvatarUrl()
+                                            )
+                                    );
+                                }
+                                return Flowable.just(ListViewModel.success(listItems));
                             }
-
-                            //map from RepositoryDataModel to RepositoryListItem
-                            for (RepositoryDataModel repo : response.body()) {
-                                listItems.add(
-                                        new RepositoryListItem(
-                                                repo.getDescription(),
-                                                repo.getCreated_at(),
-                                                repo.getAvatarUrl()
-                                        )
-                                );
-                            }
-                            return Flowable.just(ListViewModel.success(listItems));
-                    }
-                })
-                .onErrorReturn(
-                        //handle exceptions which occur outside of the response object from retrofit
-                        //This is because
-                        new Function<Throwable, ListViewModel>() {
-                                   @Override
-                                   public ListViewModel apply(Throwable throwable) throws Exception {
-
-                                       return ListViewModel.error(throwable.getMessage());
-                                   }
-                               }
-                )
-                .startWith(
-                         ListViewModel.loading()
-                )
+                        })
                 .subscribeOn(Schedulers.io());
     }
 }

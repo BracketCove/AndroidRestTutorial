@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
   ~  * Copyright (C) 2017 Ryan Kay Open Source Project
@@ -17,21 +18,14 @@
   -->
 
 <resources>
-    <string name="app_name">AndroidRestTutorial</string>
-    <string name="action_delete_item">Item Deleted</string>
-    <string name="action_undo">UNDO?</string>
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorWindowBackground</item>
 
-    <!-- used as tags for shared element transitions -->
-    <string name="transition_drawable">drawable</string>
-    <string name="transition_message">message</string>
-    <string name="transition_time_and_date">date</string>
-    <string name="title_toolbar">List Activity</string>
-
-    <string name="GITHUB_API_HOST">https://api.github.com</string>
-
-    <!-- errors -->
-    <string name="error_empty_dataset">No Repos listed for:</string>
-    <string name="error_not_found">Resource not found.</string>
-
+        <item name="android:windowContentTransitions">true</item>
+    </style>
 
 </resources>

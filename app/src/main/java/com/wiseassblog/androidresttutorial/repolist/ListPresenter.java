@@ -28,6 +28,7 @@ import com.wiseassblog.androidresttutorial.util.BaseSchedulerProvider;
 import com.wiseassblog.androidresttutorial.viewmodel.ListViewModel;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
@@ -64,30 +65,44 @@ public class ListPresenter implements LifecycleObserver {
     public void getListFromDataSource(String user) {
         disposables.add(
                 dataSource.getUserRepositories(user)
-                .observeOn(scheduler.getUiScheduler())
-                .subscribeWith(new DisposableSubscriber<ListViewModel>() {
-                    @Override
-                    public void onNext(ListViewModel uiModel) {
-                        if (uiModel.hasError()) {
-                            view.showErrorMessage(uiModel.getErrorMessage());
-                            view.startMainActivity();
-                        } else if (uiModel.isLoading()) {
-                            view.showLoadingIndicator();
-                        } else {
-                            view.setUpAdapterAndView(uiModel.getRepoList());
-                        }
-                    }
+                        .observeOn(scheduler.getUiScheduler())
+                        .startWith(
+                                ListViewModel.loading()
+                        )
+                        .onErrorReturn(
+                                //handle exceptions which occur outside of the response object from retrofit
+                                new Function<Throwable, ListViewModel>() {
+                                    @Override
+                                    public ListViewModel apply(Throwable throwable) throws Exception {
 
-                    @Override
-                    public void onError(Throwable t) {
-                        Log.d("ERROR", t.getMessage() + " " + t.getLocalizedMessage());
-                    }
+                                        return ListViewModel.error(throwable.getMessage());
+                                    }
+                                }
+                        )
+                        .subscribeWith(new DisposableSubscriber<ListViewModel>() {
+                            @Override
+                            public void onNext(ListViewModel uiModel) {
+                                if (uiModel.hasError()) {
+                                    view.showErrorMessage(uiModel.getErrorMessage());
+                                    view.startMainActivity();
+                                } else if (uiModel.isLoading()) {
+                                    view.showLoadingIndicator();
+                                } else {
+                                    view.setUpAdapterAndView(uiModel.getRepoList());
+                                }
+                            }
 
-                    @Override
-                    public void onComplete() {
+                            @Override
+                            public void onError(Throwable t) {
+                                Log.d("ERROR", t.getMessage() + " " + t.getLocalizedMessage());
+                            }
 
-                    }
-                })
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        })
+
         );
     }
 }

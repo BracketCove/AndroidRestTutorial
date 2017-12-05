@@ -1,15 +1,15 @@
-package com.wiseassblog.androidresttutorial.di;
+package com.wiseassblog.startingpoint.di;
 
 import android.content.Context;
 
-import com.wiseassblog.androidresttutorial.GitHubApplication;
-import com.wiseassblog.androidresttutorial.data.RepositoryDataSourceImpl;
-import com.wiseassblog.androidresttutorial.data.RepositoryDataSourceInterface;
-import com.wiseassblog.androidresttutorial.data.GitHubRestAdapter;
-import com.wiseassblog.androidresttutorial.data.UrlManager;
-import com.wiseassblog.androidresttutorial.error.ErrorInterceptor;
-import com.wiseassblog.androidresttutorial.util.BaseSchedulerProvider;
-import com.wiseassblog.androidresttutorial.util.SchedulerProvider;
+import com.wiseassblog.startingpoint.GitHubApplication;
+import com.wiseassblog.startingpoint.data.GitHubRestAdapter;
+import com.wiseassblog.startingpoint.data.RepositoryDataSourceImpl;
+import com.wiseassblog.startingpoint.data.RepositoryDataSourceInterface;
+import com.wiseassblog.startingpoint.data.UrlManager;
+import com.wiseassblog.startingpoint.error.ErrorInterceptor;
+import com.wiseassblog.startingpoint.util.BaseSchedulerProvider;
+import com.wiseassblog.startingpoint.util.SchedulerProvider;
 
 import java.util.concurrent.TimeUnit;
 

@@ -42,6 +42,7 @@ public class ErrorInterceptor implements Interceptor {
     @Override
     public Response intercept(Interceptor.Chain chain) throws IOException {
         Response response = chain.proceed(chain.request());
+
         if (!response.isSuccessful()) {
             throw new GitHubError(
                     response.code(),
