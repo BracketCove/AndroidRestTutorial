@@ -38,6 +38,6 @@ I'll be building this project with live feedback and contributions from anyone w
 
 
 ## Discussion
-Most discussion of this project will take place in my [Slack Channel](https://api.github.com/users/BracketCove/repos). 
+Most discussion of this project will take place in my [Slack Channel](https://join.slack.com/t/wiseass/shared_invite/enQtMjY3MTcyOTExMjY3LWUxZGM2ZTBmMjI3NWI3YTUwMTFjNjI0MDc1ZWI3MTllYzFmNjQyNjc3MWI2MGYyODJkN2RmMjE4OGQ3MTJiNjA). 
 
 As mentioned above, you may also use GitHub Issues if you have something against slack.
