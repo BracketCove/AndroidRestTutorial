@@ -48,5 +48,6 @@ ext {
     constraintLayoutVersion = '1.0.2'
     archLifecycleVersion = '1.0.3'
     archLifecycleExtensionsVersion = '1.0.0'
+    archLifecycleCompilerVersion = '1.0.0'
 
 }

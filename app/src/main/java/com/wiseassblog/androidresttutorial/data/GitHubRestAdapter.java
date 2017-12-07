@@ -25,6 +25,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
+import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.http.GET;
@@ -71,5 +72,4 @@ public class GitHubRestAdapter {
     public Flowable<Response<List<RepositoryDataModel>>> getUserRepositories(final String user) {
         return github.getUserPublicRepositories(user);
     }
-
 }

@@ -18,9 +18,6 @@
 
 package com.wiseassblog.androidresttutorial.error;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 
 import okhttp3.Interceptor;

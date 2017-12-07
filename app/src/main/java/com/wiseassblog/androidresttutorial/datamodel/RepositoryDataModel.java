@@ -18,6 +18,8 @@
 
 package com.wiseassblog.androidresttutorial.datamodel;
 
+import com.squareup.moshi.Json;
+
 import java.security.acl.Owner;
 
 /**
@@ -42,6 +44,8 @@ public class RepositoryDataModel {
     "avatarUrl" using annotations and other wizardry.
      */
     final String description;
+
+    @Json(name = "created_at")
     final String created_at;
     final Owner owner;
 
