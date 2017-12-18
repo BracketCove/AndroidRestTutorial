@@ -59,7 +59,7 @@ public class GitHubRestAdapter {
      */
     public interface GitHubService {
         @GET(UrlManager.REPOS)
-        Flowable<Response<List<RepositoryDataModel>>> getUserPublicRepositories(
+        Flowable<List<RepositoryDataModel>> getUserPublicRepositories(
                 @Path("user") String user
         );
     }
@@ -69,7 +69,7 @@ public class GitHubRestAdapter {
         github = retrofit.create(GitHubService.class);
     }
 
-    public Flowable<Response<List<RepositoryDataModel>>> getUserRepositories(final String user) {
+    public Flowable<List<RepositoryDataModel>> getUserRepositories(final String user) {
         return github.getUserPublicRepositories(user);
     }
 }

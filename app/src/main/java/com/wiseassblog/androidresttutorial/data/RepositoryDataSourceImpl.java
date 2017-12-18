@@ -1,3 +1,21 @@
+/*
+ * *
+ *  * Copyright (C) 2017 Ryan Kay Open Source Project
+ *  *
+ *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  * you may not use this file except in compliance with the License.
+ *  * You may obtain a copy of the License at
+ *  *
+ *  *      http://www.apache.org/licenses/LICENSE-2.0
+ *  *
+ *  * Unless required by applicable law or agreed to in writing, software
+ *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  * See the License for the specific language governing permissions and
+ *  * limitations under the License.
+ *
+ */
+
 package com.wiseassblog.androidresttutorial.data;
 
 import com.wiseassblog.androidresttutorial.datamodel.RepositoryDataModel;
@@ -42,27 +60,43 @@ public class RepositoryDataSourceImpl implements RepositoryDataSourceInterface {
         this.restAdapter = restAdapter;
     }
 
+    /**
+     * This method does the following things:
+     * 1. Ultimately return a Flowable of type ListViewModel
+     * 2. Return a Flowable of type List<RepositoryDataModel> from the restAdapter
+     * 3. Transform emissions from restAdapter's Flowable, to a new Flowable of type ListViewModel,
+     * then emit from that Flowable.
+     * 4. Function refers to restAdapter.getUserRepositories(user)
+     * 5. Publisher refers to apply is supposed to return (which is a Flowable of type ListViewModel
+     * 6. This is what we do to 4, to get 5 (it makes sense if you don't think about it, trust me)
+     * 7. Do that work off of the UI thread
+     * @param user
+     * @return
+     */
     @Override
     public Flowable<ListViewModel> getUserRepositories(String user) {
-
-        return restAdapter.getUserRepositories(user)
+        //1:
+        return //2:
+                restAdapter.getUserRepositories(user)
+                 //3:
                 .flatMap(
-                        new Function<Response<List<RepositoryDataModel>>,
+                         //4:
+                        new Function<List<RepositoryDataModel>,
+                                //5:
                                 Publisher<ListViewModel>>() {
                             @Override
                             public Publisher<ListViewModel>
-                            apply(Response<List<RepositoryDataModel>> response) throws Exception {
-                                //Unless I'm missing something, we shouldn't need to check
-                                // response.isSuccessful here since it was handled in ErrorIntercepter.java
+                            apply(List<RepositoryDataModel> response) throws Exception {
+                                //6:
                                 List<RepositoryListItem> listItems
                                         = new ArrayList<>();
 
-                                if (response.body().size() == 0) {
+                                if (response.size() == 0) {
                                     throw new EmptyDatasetException();
                                 }
 
                                 //map from RepositoryDataModel to RepositoryListItem
-                                for (RepositoryDataModel repo : response.body()) {
+                                for (RepositoryDataModel repo : response) {
                                     listItems.add(
                                             new RepositoryListItem(
                                                     repo.getDescription(),
@@ -72,8 +106,10 @@ public class RepositoryDataSourceImpl implements RepositoryDataSourceInterface {
                                     );
                                 }
                                 return Flowable.just(ListViewModel.success(listItems));
+                                // 6 ends here
                             }
                         })
+                        //7
                 .subscribeOn(Schedulers.io());
     }
 }
